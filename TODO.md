@@ -1,32 +1,102 @@
-# TODO: Complete Laravel Blog Project
+# TODO: Testing Checklist and API Tests for MyBlog
 
-## Approved Plan Breakdown
+## Frontend Thorough Testing Checklist
 
-1. **Fix Admin PostController**
-   - Add 'show' method to app/Http/Controllers/Admin/PostController.php
-   - Correct redirects from 'admin.index' to 'admin.posts.index'
+- [ ] Visit and navigate the Home, About, Contact pages.
+- [ ] Browse blog listing and verify blog post display.
+- [ ] Open individual blog posts and check content, comments, navigation.
+- [ ] Test user authentication flows:
+  - [ ] Registration page: submit valid and invalid inputs.
+  - [ ] Login page: login with valid and invalid credentials.
+  - [ ] Password reset flow: request link, reset password.
+  - [ ] Email verification page and verification process.
+- [ ] Profile page testing:
+  - [ ] Edit profile information and submit.
+  - [ ] Change password with valid and invalid current password.
+  - [ ] Delete account flow.
+- [ ] Admin panel:
+  - [ ] Access dashboard.
+  - [ ] Create, edit, delete blog posts.
+  - [ ] Manage users if available.
+- [ ] Validate all forms have proper validation errors on bad input.
+- [ ] Check all links, buttons, and interactive UI elements for expected behavior.
+- [ ] Verify navigation menus, responsiveness, and layout correctness.
 
-2. **Update Admin Post Views**
-   - Fix route names in resources/views/admin/posts/index.blade.php (add 'admin.' prefix)
-   - Fix route names in resources/views/admin/posts/create.blade.php (add 'admin.' prefix)
-   - Fix route names in resources/views/admin/posts/edit.blade.php (add 'admin.' prefix)
+## Backend API Endpoint and Edge Case Testing
 
-3. **Add Blog Route**
-   - Add route for /blog using BlogController in routes/web.php
+You can run the following curl commands on the terminal to test the APIs:
 
-4. **Add Public Post Routes**
-   - Add routes for listing posts (/blog) and showing individual posts (/posts/{post}) in routes/web.php
+### Authentication
 
-5. **Run Migrations and Test**
-   - Execute `php artisan migrate` to set up database
-   - Execute `php artisan serve` to test the application
-   - Check for errors in views or controllers
+- Login (replace with actual email/password):
+```bash
+curl -X POST http://127.0.0.1:8000/api/login -d "email=user@example.com&password=secret"
+```
 
-## Progress Tracking
-- [ ] Step 1: Fix Admin PostController
-- [ ] Step 2: Update index.blade.php
-- [ ] Step 3: Update create.blade.php
-- [ ] Step 4: Update edit.blade.php
-- [ ] Step 5: Update routes/web.php
-- [ ] Step 6: Run migrations
-- [ ] Step 7: Test application
+- Logout:
+```bash
+curl -X POST http://127.0.0.1:8000/api/logout -H "Authorization: Bearer <token>"
+```
+
+### Blog Posts
+
+- List posts:
+```bash
+curl http://127.0.0.1:8000/api/posts
+```
+
+- Get a post by ID:
+```bash
+curl http://127.0.0.1:8000/api/posts/{id}
+```
+
+- Create a post (requires auth token):
+```bash
+curl -X POST http://127.0.0.1:8000/api/posts -H "Authorization: Bearer <token>" -d "title=New Post&content=Post content"
+```
+
+- Update a post:
+```bash
+curl -X PUT http://127.0.0.1:8000/api/posts/{id} -H "Authorization: Bearer <token>" -d "title=Updated Title&content=Updated content"
+```
+
+- Delete a post:
+```bash
+curl -X DELETE http://127.0.0.1:8000/api/posts/{id} -H "Authorization: Bearer <token>"
+```
+
+### Payments
+
+- List payments:
+```bash
+curl http://127.0.0.1:8000/api/payments
+```
+
+- Create a payment (requires auth):
+```bash
+curl -X POST http://127.0.0.1:8000/api/payments -H "Authorization: Bearer <token>" -d "amount=100&method=mpesa"
+```
+
+### User Profile
+
+- Update profile info:
+```bash
+curl -X PUT http://127.0.0.1:8000/api/profile -H "Authorization: Bearer <token>" -d "name=New Name&email=test@example.com"
+```
+
+- Delete user account:
+```bash
+curl -X DELETE http://127.0.0.1:8000/api/profile -H "Authorization: Bearer <token>"
+```
+
+---
+
+### Edge Case Tests
+
+- Use invalid or expired tokens in protected endpoints and verify 401 Unauthorized.
+- Submit invalid or incomplete data to API endpoints and verify proper validation error responses.
+- Test rate limits or security restrictions if applicable.
+
+---
+
+Please execute these frontend manual tests and backend API commands step-by-step and share any issues or errors you encounter for further assistance.
