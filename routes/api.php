@@ -15,7 +15,11 @@ use App\Http\Controllers\MpesaController;
 |
 */
 
+use App\Http\Controllers\Api\PostController;
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/mpesa/callback', [MpesaController::class,'callback']);
+
+Route::apiResource('posts', PostController::class);
